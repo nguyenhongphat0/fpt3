@@ -1,6 +1,7 @@
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Stack;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -60,18 +61,36 @@ public class Main {
         }
     }
     
+    static void dfs(int[][] a, int[] c, int x, int d) {
+        c[x] = d;
+        for (int i = 0; i < c.length; i++) {
+            if (c[i] == 0 && a[x][i] > 0) dfs(a, c, i, d);
+        }
+    }
+    
+    static int[] countAdjCom(int[][] a) {
+        int[] c = new int[a.length];
+        int d = 0;
+        for (int i = 0; i < c.length; i++) {
+            if (c[i] == 0) dfs(a, c, i, ++d);
+        }
+        return c;
+    }
+    
     public static void main(String[] args) {
         // TODO code application logic here
         
         int a[][] = loadMatrix("input.txt");
-        print(a);
-        int s = 0;
-        for (int i = 0; i < a.length; i++) s += a[0][i];
-        for (int i = 0; i < a.length; i++) s += a[a.length-1][i];
-        for (int i = 0; i < a.length; i++) s += a[i][0];
-        for (int i = 0; i < a.length; i++) s += a[i][a.length-1];
-        System.out.println(s);
         
+        DIJKSTRA dj = new DIJKSTRA(a, 0, 4);
+        dj.go();
+        Stack<Integer> path = dj.trace();
+        System.out.println("Shortest path from "+dj.from+" to "+dj.to+" is: "+dj.f[dj.to].value);
+        System.out.print(path.pop());
+        while (!path.isEmpty()) {
+            System.out.print(" -> " + path.pop());
+        }
+        System.out.println();
     }
     
 }
