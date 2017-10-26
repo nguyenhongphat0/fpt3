@@ -1,14 +1,6 @@
 
 import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 
 
@@ -28,19 +20,12 @@ public class LoginFrame extends javax.swing.JFrame {
      * Creates new form LoginFrame
      */
     public LoginFrame() {
-        try {
-            initComponents();
-            this.getContentPane().setBackground(new Color(245, 246, 247));
-            loginPanel.setBackground(new Color(245, 246, 247));
-            conceptPanel.setBackground(new Color(245, 246, 247));
-            welcomeLabel.setText("<html><span style=\"font-weight: light\">Welcome Back,<br>My User</span></html>");
-            BufferedImage img = ImageIO.read(new File("asset/badge.png"));
-            conceptImg.setIcon(new ImageIcon(img));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        
-        
+        initComponents();
+        this.getContentPane().setBackground(new Color(245, 246, 247));
+        loginPanel.setBackground(new Color(245, 246, 247));
+        conceptPanel.setBackground(new Color(245, 246, 247));
+        welcomeLabel.setText("<html><span style=\"font-weight: light\">Welcome Back,<br>My User</span></html>");
+        ImageLoader.smartAttaching("asset/badge.png", conceptImg);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -80,6 +65,11 @@ public class LoginFrame extends javax.swing.JFrame {
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.setFocusPainted(false);
         jButton1.setPreferredSize(new java.awt.Dimension(100, 40));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         usernameTxt.setFont(new java.awt.Font("Noto Sans", 0, 13)); // NOI18N
         usernameTxt.setMargin(new java.awt.Insets(0, 5, 0, 5));
@@ -100,12 +90,12 @@ public class LoginFrame extends javax.swing.JFrame {
         loginPanel.setLayout(loginPanelLayout);
         loginPanelLayout.setHorizontalGroup(
             loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginPanelLayout.createSequentialGroup()
+            .addGroup(loginPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(passwordTxt)
-                    .addComponent(usernameTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, loginPanelLayout.createSequentialGroup()
+                .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(passwordTxt, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(usernameTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(loginPanelLayout.createSequentialGroup()
                         .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(welcomeLabel)
@@ -131,7 +121,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(28, 28, 28))
         );
 
         conceptPanel.setLayout(new java.awt.CardLayout());
@@ -160,11 +150,29 @@ public class LoginFrame extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(loginPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap(210, Short.MAX_VALUE))))
+                        .addContainerGap(192, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String username = usernameTxt.getText();
+        String password = new String(passwordTxt.getPassword());
+        UserDTO user = UserDAO.getUser(username, password);
+        if (user == null) {
+            JOptionPane.showMessageDialog(this, "Incorrect username or password!");
+            return;
+        }
+        switch (user.getRoles()) {
+            case "ADMIN":
+                new AdminFrame(user).setVisible(true);
+                this.setVisible(false);
+                break;
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,6 +206,8 @@ public class LoginFrame extends javax.swing.JFrame {
             public void run() {
                 new LoginFrame().setVisible(true);
             }
+            
+            
         });
     }
 
