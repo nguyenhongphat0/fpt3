@@ -24,12 +24,12 @@ public class UserDAO implements Serializable {
         ResultSet res = null;
         try {
             conn = MyConnection.getConnection();
-            pre = conn.prepareStatement("SELECT username, password, fullname, roles FROM Users WHERE username = ? AND password = ?");
+            pre = conn.prepareStatement("SELECT username, password, fullname, roles, passhint, avatar FROM Users WHERE username = ? AND password = ?");
             pre.setString(1, username);
             pre.setString(2, password);
             res = pre.executeQuery();
             if (res.next()) {
-                user = new UserDTO(username, password, res.getString("fullname"), res.getString("roles"));
+                user = new UserDTO(username, password, res.getString("fullname"), res.getString("roles"), res.getString("passhint"), res.getString("avatar"));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -38,6 +38,29 @@ public class UserDAO implements Serializable {
         }
         return user;
         
+    }
+    
+    public static boolean updateUser(UserDTO user) {
+        Connection conn = null;
+        PreparedStatement pre = null;
+        ResultSet res = null;
+        boolean c = true;
+        try {
+            conn = MyConnection.getConnection();
+            pre = conn.prepareStatement("UPDATE Users SET password = ?, fullname = ?, passhint = ?, avatar = ? WHERE username = ?");
+            pre.setString(1, user.password);
+            pre.setString(2, user.fullname);
+            pre.setString(3, user.passhint);
+            pre.setString(4, user.avatar);
+            pre.setString(5, user.username);
+            c = pre.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            c = false;
+        } finally {
+            MyConnection.closeConnection(conn, pre, res);
+        }
+        return c;
     }
     
 }

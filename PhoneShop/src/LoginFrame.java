@@ -168,7 +168,7 @@ public class LoginFrame extends javax.swing.JFrame {
         }
         switch (user.getRoles()) {
             case "ADMIN":
-                new AdminFrame(user).setVisible(true);
+                new AdminFrame(user, this).setVisible(true);
                 this.setVisible(false);
                 break;
         }

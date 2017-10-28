@@ -12,14 +12,19 @@ import java.io.Serializable;
  * @author nguyenhongphat0
  */
 public class UserDTO implements Serializable {
-    String username, password, fullname, roles;
+    String username, password, fullname, roles, passhint, avatar;
 
-    public UserDTO(String username, String password, String fullname, String roles) {
+    public UserDTO() {
+    }
+
+    public UserDTO(String username, String password, String fullname, String roles, String hint, String avatar) {
         this.username = username;
         this.password = password;
         this.fullname = fullname;
         this.roles = roles;
-    }
+        this.passhint = hint;
+        this.avatar = avatar;
+    }    
 
     public String getUsername() {
         return username;
@@ -58,8 +63,20 @@ public class UserDTO implements Serializable {
         return "UserDTO{" + "username=" + username + ", password=" + password + ", fullname=" + fullname + ", roles=" + roles + '}';
     }
 
-    public UserDTO() {
+    public String getPasshint() {
+        return passhint;
     }
-    
+
+    public void setPasshint(String passhint) {
+        this.passhint = passhint;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
     
 }

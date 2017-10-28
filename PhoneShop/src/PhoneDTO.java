@@ -77,7 +77,7 @@ public class PhoneDTO {
 
     @Override
     public String toString() {
-        return "PhoneDTO{" + "id=" + id + ", name=" + name + ", description=" + description + ", image=" + picture + ", price=" + price + '}';
+        return "{" + "id=" + id + ", name=" + name + ", description=" + description + ", image=" + picture + ", price=" + price + '}';
     }
     
     public Vector toVector() {

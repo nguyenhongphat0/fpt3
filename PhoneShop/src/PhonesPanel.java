@@ -3,11 +3,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -25,12 +22,14 @@ import javax.swing.table.DefaultTableModel;
 public class PhonesPanel extends javax.swing.JPanel {
     DefaultTableModel model;
     String pictureLink = null;
+    UserDTO currentUser;
     
     /**
      * Creates new form PhonesPanel
      */
-    public PhonesPanel() {
+    public PhonesPanel(UserDTO currentUser) {
         initComponents();
+        this.currentUser = currentUser;
         model = getTableModel();
         phoneTable.setFillsViewportHeight(true);
     }
@@ -398,6 +397,7 @@ public class PhonesPanel extends javax.swing.JPanel {
         if (JOptionPane.showConfirmDialog(this, "Are you sure you want to delete selected phone?") != JOptionPane.YES_OPTION) return;
         if (PhoneDAO.deletePhone(id)) {
             showPhones(PhoneDAO.getAllPhones());
+            Logs.push(currentUser.username, "remove phone: \"" + id + "\"");
             JOptionPane.showMessageDialog(null, "Phone deleted successfully");
         } else {
             JOptionPane.showMessageDialog(null, "Error deleting phone, id not found");
@@ -437,8 +437,9 @@ public class PhonesPanel extends javax.swing.JPanel {
         phone.picture = "asset/phones/" + phone.id + ".jpg";
         copyImage(pictureLink, phone.picture);
         if (PhoneDAO.addPhone(phone)) {
-            JOptionPane.showMessageDialog(null, "New phone added successfully");
             showPhones(PhoneDAO.getAllPhones());
+            Logs.push(currentUser.username, "add new phone: \"" + phone.id + "\"");
+            JOptionPane.showMessageDialog(null, "New phone added successfully");
         }
         else JOptionPane.showMessageDialog(null, "Error adding phone, code existed!");
     }//GEN-LAST:event_addPhoneBtnActionPerformed
@@ -460,8 +461,10 @@ public class PhonesPanel extends javax.swing.JPanel {
         phone.picture = "asset/phones/" + phone.id + ".jpg";
         copyImage(pictureLink, phone.picture);
         if (PhoneDAO.updatePhone(phone)) {
-            JOptionPane.showMessageDialog(null, "Update phone detail successfully");
             showPhones(PhoneDAO.getAllPhones());
+            Logs.push(currentUser.username, "update phone information to:");
+            Logs.push("[" + currentUser.username + "]" + phone.toString());
+            JOptionPane.showMessageDialog(null, "Update phone detail successfully");
         }
         else JOptionPane.showMessageDialog(null, "Error updating information");
     }//GEN-LAST:event_updatePhoneBtnActionPerformed

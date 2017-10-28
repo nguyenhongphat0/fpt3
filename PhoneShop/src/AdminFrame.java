@@ -2,7 +2,9 @@
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,23 +18,29 @@ import javax.swing.JLabel;
  */
 public class AdminFrame extends javax.swing.JFrame {
     PhonesPanel phonePanel;
+    AccountPanel accountPanel;
+    CardLayout cardLayout;
+    JFrame parent;
 
-    public AdminFrame(UserDTO admin) {
+    public AdminFrame(UserDTO admin, JFrame parent) {
         initComponents();
+        this.parent = parent;
         drawingStuff(admin);
     }
     
     public static void main(String[] args) {
-        new AdminFrame(new UserDTO("phatias", "phatias", "phatias", "phatias")).setVisible(true);
+        new AdminFrame(new UserDTO("phatias", "phatias", "phatias", "phatias", "phatias", "phatias"), null).setVisible(true);
     }
 
     private void drawingStuff(UserDTO admin) {
-        ImageLoader.attachImageFitHeight("asset/badge.png", logoLabel);
+        ImageLoader.smartAttaching(admin.avatar, logoLabel);
         usernameLabel.setText(admin.fullname);
-        phonePanel = new PhonesPanel();
+        phonePanel = new PhonesPanel(admin);
         contentPanel.add(phonePanel, "Phones");
-        CardLayout l = (CardLayout) contentPanel.getLayout();
-        l.show(contentPanel, "Phones");
+        accountPanel = new AccountPanel(admin, logoLabel);
+        contentPanel.add(accountPanel, "Account");
+        cardLayout = (CardLayout) contentPanel.getLayout();
+        cardLayout.show(contentPanel, "Phones");
         phonesTabMouseClicked(null);
     }
     
@@ -49,7 +57,6 @@ public class AdminFrame extends javax.swing.JFrame {
         unFocus(phonesTab);
         unFocus(usersTab);
         unFocus(accountTab);
-        unFocus(settingTab);
         unFocus(logoutTab);
         label.setBackground(new Color(184, 7, 1));
     }
@@ -67,7 +74,6 @@ public class AdminFrame extends javax.swing.JFrame {
         phonesTab = new javax.swing.JLabel();
         usersTab = new javax.swing.JLabel();
         accountTab = new javax.swing.JLabel();
-        settingTab = new javax.swing.JLabel();
         logoutTab = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         logoLabel = new javax.swing.JLabel();
@@ -123,19 +129,6 @@ public class AdminFrame extends javax.swing.JFrame {
             }
         });
 
-        settingTab.setBackground(new java.awt.Color(21, 21, 21));
-        settingTab.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
-        settingTab.setForeground(new java.awt.Color(255, 255, 255));
-        settingTab.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        settingTab.setText("SETTING");
-        settingTab.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        settingTab.setOpaque(true);
-        settingTab.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                settingTabMouseClicked(evt);
-            }
-        });
-
         logoutTab.setBackground(new java.awt.Color(21, 21, 21));
         logoutTab.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
         logoutTab.setForeground(new java.awt.Color(255, 255, 255));
@@ -170,20 +163,23 @@ public class AdminFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(20, 20, 20))
+                            .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(0, 120, Short.MAX_VALUE)))
+                        .addGap(20, 20, 20))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
+                .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(usernameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
@@ -197,7 +193,6 @@ public class AdminFrame extends javax.swing.JFrame {
             .addComponent(phonesTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(usersTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(accountTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(settingTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(logoutTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,10 +209,8 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(accountTab, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(settingTab, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logoutTab, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addContainerGap(298, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
@@ -233,11 +226,11 @@ public class AdminFrame extends javax.swing.JFrame {
         userPanel.setLayout(userPanelLayout);
         userPanelLayout.setHorizontalGroup(
             userPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 859, Short.MAX_VALUE)
+            .addGap(0, 902, Short.MAX_VALUE)
         );
         userPanelLayout.setVerticalGroup(
             userPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
+            .addGap(0, 573, Short.MAX_VALUE)
         );
 
         contentPanel.add(userPanel, "card2");
@@ -252,6 +245,7 @@ public class AdminFrame extends javax.swing.JFrame {
     private void phonesTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_phonesTabMouseClicked
         // TODO add your handling code here:
         setFocus(phonesTab);
+        cardLayout.show(contentPanel, "Phones");
         ArrayList<PhoneDTO> list = PhoneDAO.getAllPhones();
         phonePanel.showPhones(list);
     }//GEN-LAST:event_phonesTabMouseClicked
@@ -264,16 +258,19 @@ public class AdminFrame extends javax.swing.JFrame {
     private void accountTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accountTabMouseClicked
         // TODO add your handling code here:
         setFocus(accountTab);
+        cardLayout.show(contentPanel, "Account");
+        accountPanel.loadLogs();
+        accountPanel.distriveUserInfo();
     }//GEN-LAST:event_accountTabMouseClicked
-
-    private void settingTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingTabMouseClicked
-        // TODO add your handling code here:
-        setFocus(settingTab);
-    }//GEN-LAST:event_settingTabMouseClicked
 
     private void logoutTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutTabMouseClicked
         // TODO add your handling code here:
         setFocus(logoutTab);
+        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?") == JOptionPane.OK_OPTION) {
+            this.setVisible(false);
+            parent.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_logoutTabMouseClicked
 
 
@@ -288,7 +285,6 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JLabel logoLabel;
     private javax.swing.JLabel logoutTab;
     private javax.swing.JLabel phonesTab;
-    private javax.swing.JLabel settingTab;
     private javax.swing.JPanel userPanel;
     private javax.swing.JLabel usernameLabel;
     private javax.swing.JLabel usersTab;
