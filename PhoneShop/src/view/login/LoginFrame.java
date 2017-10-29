@@ -173,7 +173,7 @@ public class LoginFrame extends javax.swing.JFrame {
         String password = new String(passwordTxt.getPassword());
         UserDTO user = UserDAO.getUser(username, password);
         if (user == null) {
-            JOptionPane.showMessageDialog(this, "Incorrect username or password!");
+            JOptionPane.showMessageDialog(this, "Incorrect username or password!", "Log in fail", 0);
             return;
         }
         new DashboardFrame(user, this).setVisible(true);

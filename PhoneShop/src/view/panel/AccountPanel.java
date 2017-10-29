@@ -31,6 +31,7 @@ public class AccountPanel extends javax.swing.JPanel {
         initComponents();
         this.user = user;
         this.logoLabel = logoLabel;
+        yourroleisLbl.setText("You role is " + user.roles);
         loadLogs();
     }
     
@@ -84,7 +85,7 @@ public class AccountPanel extends javax.swing.JPanel {
         titleLbl = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
+        yourroleisLbl = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         logsLbl = new javax.swing.JLabel();
         fullnameTxt = new javax.swing.JTextField();
@@ -166,7 +167,7 @@ public class AccountPanel extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(245, 254, 247));
 
-        jLabel6.setText("Your roles is ADMIN");
+        yourroleisLbl.setText("Your roles is ADMIN");
 
         jLabel8.setFont(new java.awt.Font("Cantarell", 0, 11)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(132, 132, 132));
@@ -180,7 +181,7 @@ public class AccountPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
+                    .addComponent(yourroleisLbl)
                     .addComponent(jLabel8))
                 .addContainerGap(354, Short.MAX_VALUE))
             .addComponent(logsLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -189,7 +190,7 @@ public class AccountPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6)
+                .addComponent(yourroleisLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -344,7 +345,6 @@ public class AccountPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -356,5 +356,6 @@ public class AccountPanel extends javax.swing.JPanel {
     private javax.swing.JLabel titleLbl;
     private javax.swing.JButton updateBtn;
     private javax.swing.JTextField usernameTxt;
+    private javax.swing.JLabel yourroleisLbl;
     // End of variables declaration//GEN-END:variables
 }
