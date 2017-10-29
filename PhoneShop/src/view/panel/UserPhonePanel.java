@@ -1,4 +1,10 @@
+package view.panel;
 
+
+import controller.Logs;
+import model.phones.PhoneDAO;
+import model.phones.PhoneDTO;
+import model.users.UserDTO;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +14,7 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import controller.ImageLoader;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author nguyenhongphat0
  */
-public class PhonesPanel extends javax.swing.JPanel {
+public class UserPhonePanel extends javax.swing.JPanel {
     DefaultTableModel model;
     String pictureLink = null;
     UserDTO currentUser;
@@ -27,11 +34,13 @@ public class PhonesPanel extends javax.swing.JPanel {
     /**
      * Creates new form PhonesPanel
      */
-    public PhonesPanel(UserDTO currentUser) {
+    public UserPhonePanel(UserDTO user) {
         initComponents();
-        this.currentUser = currentUser;
+        this.currentUser = user;
         model = getTableModel();
         phoneTable.setFillsViewportHeight(true);
+        ArrayList<PhoneDTO> list = PhoneDAO.getAllPhones();
+        showPhones(list);
     }
     
     public void showPhones(ArrayList<PhoneDTO> phones) {
@@ -70,17 +79,12 @@ public class PhonesPanel extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         descriptionTxt = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        loadImgBtn = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         phoneTable = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         controlPanel = new javax.swing.JPanel();
-        addPhoneBtn = new javax.swing.JButton();
-        rmPhoneBtn = new javax.swing.JButton();
-        updatePhoneBtn = new javax.swing.JButton();
         detailImg = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
@@ -152,21 +156,6 @@ public class PhonesPanel extends javax.swing.JPanel {
         descriptionTxt.setMinimumSize(new java.awt.Dimension(0, 33));
         descriptionTxt.setPreferredSize(new java.awt.Dimension(16, 35));
 
-        jLabel6.setFont(new java.awt.Font("Cantarell", 0, 9)); // NOI18N
-        jLabel6.setText("Image:");
-
-        loadImgBtn.setBackground(new java.awt.Color(203, 203, 203));
-        loadImgBtn.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
-        loadImgBtn.setForeground(new java.awt.Color(1, 1, 1));
-        loadImgBtn.setText("Load image");
-        loadImgBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        loadImgBtn.setMargin(new java.awt.Insets(5, 15, 5, 15));
-        loadImgBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadImgBtnActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout detailPanelLayout = new javax.swing.GroupLayout(detailPanel);
         detailPanel.setLayout(detailPanelLayout);
         detailPanelLayout.setHorizontalGroup(
@@ -174,7 +163,6 @@ public class PhonesPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, detailPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(loadImgBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(priceTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(idTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, detailPanelLayout.createSequentialGroup()
@@ -183,8 +171,7 @@ public class PhonesPanel extends javax.swing.JPanel {
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
+                            .addComponent(jLabel5))
                         .addGap(0, 407, Short.MAX_VALUE))
                     .addComponent(nameTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(osTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -214,11 +201,7 @@ public class PhonesPanel extends javax.swing.JPanel {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(descriptionTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(loadImgBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         jPanel6.add(detailPanel, java.awt.BorderLayout.PAGE_END);
@@ -302,64 +285,15 @@ public class PhonesPanel extends javax.swing.JPanel {
 
         controlPanel.setBackground(new java.awt.Color(245, 254, 247));
 
-        addPhoneBtn.setBackground(new java.awt.Color(189, 0, 0));
-        addPhoneBtn.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
-        addPhoneBtn.setForeground(new java.awt.Color(255, 255, 255));
-        addPhoneBtn.setText("Add");
-        addPhoneBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        addPhoneBtn.setMargin(new java.awt.Insets(5, 15, 5, 15));
-        addPhoneBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addPhoneBtnActionPerformed(evt);
-            }
-        });
-
-        rmPhoneBtn.setBackground(new java.awt.Color(203, 203, 203));
-        rmPhoneBtn.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
-        rmPhoneBtn.setForeground(new java.awt.Color(1, 1, 1));
-        rmPhoneBtn.setText("Remove");
-        rmPhoneBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        rmPhoneBtn.setMargin(new java.awt.Insets(5, 15, 5, 15));
-        rmPhoneBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rmPhoneBtnActionPerformed(evt);
-            }
-        });
-
-        updatePhoneBtn.setBackground(new java.awt.Color(203, 203, 203));
-        updatePhoneBtn.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
-        updatePhoneBtn.setForeground(new java.awt.Color(1, 1, 1));
-        updatePhoneBtn.setText("Update");
-        updatePhoneBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        updatePhoneBtn.setMargin(new java.awt.Insets(5, 15, 5, 15));
-        updatePhoneBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updatePhoneBtnActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout controlPanelLayout = new javax.swing.GroupLayout(controlPanel);
         controlPanel.setLayout(controlPanelLayout);
         controlPanelLayout.setHorizontalGroup(
             controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlPanelLayout.createSequentialGroup()
-                .addContainerGap(195, Short.MAX_VALUE)
-                .addComponent(updatePhoneBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rmPhoneBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addPhoneBtn)
-                .addContainerGap())
+            .addGap(0, 452, Short.MAX_VALUE)
         );
         controlPanelLayout.setVerticalGroup(
             controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(controlPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addPhoneBtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(rmPhoneBtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(updatePhoneBtn, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+            .addGap(0, 64, Short.MAX_VALUE)
         );
 
         jPanel3.add(controlPanel, java.awt.BorderLayout.PAGE_END);
@@ -386,24 +320,6 @@ public class PhonesPanel extends javax.swing.JPanel {
         searchTxt.setText("Search something...");
     }//GEN-LAST:event_searchTxtFocusLost
 
-    private void rmPhoneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmPhoneBtnActionPerformed
-        // TODO add your handling code here:
-        int selectedRow = phoneTable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(null, "No phone selected");
-            return;
-        }
-        String id = (String) model.getValueAt(selectedRow, 0);
-        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to delete selected phone?") != JOptionPane.YES_OPTION) return;
-        if (PhoneDAO.deletePhone(id)) {
-            showPhones(PhoneDAO.getAllPhones());
-            Logs.push(currentUser.username, "remove phone: \"" + id + "\"");
-            JOptionPane.showMessageDialog(null, "Phone deleted successfully");
-        } else {
-            JOptionPane.showMessageDialog(null, "Error deleting phone, id not found");
-        }
-    }//GEN-LAST:event_rmPhoneBtnActionPerformed
-
     private void showPhoneDetail() {
         int rowCount = phoneTable.getSelectedRow();
         if (rowCount == -1) return;
@@ -429,55 +345,7 @@ public class PhonesPanel extends javax.swing.JPanel {
             showPhones(list);
         }
     }//GEN-LAST:event_searchTxtKeyPressed
-
-    private void addPhoneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPhoneBtnActionPerformed
-        // TODO add your handling code here:
-        PhoneDTO phone = retrivePhoneInfo();
-        if (phone == null) return;
-        phone.picture = "asset/phones/" + phone.id + ".jpg";
-        copyImage(pictureLink, phone.picture);
-        if (PhoneDAO.addPhone(phone)) {
-            showPhones(PhoneDAO.getAllPhones());
-            Logs.push(currentUser.username, "add new phone: \"" + phone.id + "\"");
-            JOptionPane.showMessageDialog(null, "New phone added successfully");
-        }
-        else JOptionPane.showMessageDialog(null, "Error adding phone, code existed!");
-    }//GEN-LAST:event_addPhoneBtnActionPerformed
-
-    void copyImage(String src, String des) {
-        File srcFile = new File(src);
-        File desFile = new File(des);
-        try {
-            Files.copy(srcFile.toPath(), desFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
     
-    private void updatePhoneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatePhoneBtnActionPerformed
-        // TODO add your handling code here:
-        PhoneDTO phone = retrivePhoneInfo();
-        if (phone == null) return;
-        phone.picture = "asset/phones/" + phone.id + ".jpg";
-        copyImage(pictureLink, phone.picture);
-        if (PhoneDAO.updatePhone(phone)) {
-            showPhones(PhoneDAO.getAllPhones());
-            Logs.push(currentUser.username, "update phone information to:");
-            Logs.push("[" + currentUser.username + "]" + phone.toString());
-            JOptionPane.showMessageDialog(null, "Update phone detail successfully");
-        }
-        else JOptionPane.showMessageDialog(null, "Error updating information");
-    }//GEN-LAST:event_updatePhoneBtnActionPerformed
-
-    private void loadImgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadImgBtnActionPerformed
-        // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        if (fileChooser.showDialog(this, "Load an image") == JFileChooser.APPROVE_OPTION) {
-            pictureLink = fileChooser.getSelectedFile().getPath();
-            ImageLoader.smartAttaching(pictureLink, detailImg);
-        }
-    }//GEN-LAST:event_loadImgBtnActionPerformed
-
     PhoneDTO retrivePhoneInfo() {
         float price;
         try {
@@ -499,7 +367,6 @@ public class PhonesPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addPhoneBtn;
     private javax.swing.JPanel controlPanel;
     private javax.swing.JTextField descriptionTxt;
     private javax.swing.JLabel detailImg;
@@ -510,7 +377,6 @@ public class PhonesPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -519,13 +385,10 @@ public class PhonesPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton loadImgBtn;
     private javax.swing.JTextField nameTxt;
     private javax.swing.JTextField osTxt;
     private javax.swing.JTable phoneTable;
     private javax.swing.JTextField priceTxt;
-    private javax.swing.JButton rmPhoneBtn;
     private javax.swing.JTextField searchTxt;
-    private javax.swing.JButton updatePhoneBtn;
     // End of variables declaration//GEN-END:variables
 }

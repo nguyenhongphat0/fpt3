@@ -1,3 +1,5 @@
+package model.phones;
+
 
 import java.util.Vector;
 
@@ -12,8 +14,8 @@ import java.util.Vector;
  * @author nguyenhongphat0
  */
 public class PhoneDTO {
-    String id, name, os, description, picture;
-    float price;
+    public String id, name, os, description, picture;
+    public float price;
 
     public PhoneDTO() {
     }
@@ -77,7 +79,7 @@ public class PhoneDTO {
 
     @Override
     public String toString() {
-        return "{" + "id=" + id + ", name=" + name + ", description=" + description + ", image=" + picture + ", price=" + price + '}';
+        return "ID: " + id + " | Name: " + name + " | Description: " + description + " | Price: " + String.format("%.2f", price);
     }
     
     public Vector toVector() {

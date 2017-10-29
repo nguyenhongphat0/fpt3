@@ -1,10 +1,17 @@
+package view.board;
 
+
+import model.users.UserDTO;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import view.panel.AccountPanel;
+import controller.ImageLoader;
+import javax.swing.JPanel;
+import view.panel.AdminPhonePanel;
+import view.panel.UserPhonePanel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,28 +23,39 @@ import javax.swing.JOptionPane;
  *
  * @author nguyenhongphat0
  */
-public class AdminFrame extends javax.swing.JFrame {
-    PhonesPanel phonePanel;
+public class DashboardFrame extends javax.swing.JFrame {
+    JPanel phonePanel;
     AccountPanel accountPanel;
     CardLayout cardLayout;
     JFrame parent;
+    UserDTO currentUser;
 
-    public AdminFrame(UserDTO admin, JFrame parent) {
+    public DashboardFrame(UserDTO user, JFrame parent) {
         initComponents();
         this.parent = parent;
-        drawingStuff(admin);
+        currentUser = user;
+        drawingStuff();
     }
     
-    public static void main(String[] args) {
-        new AdminFrame(new UserDTO("phatias", "phatias", "phatias", "phatias", "phatias", "phatias"), null).setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        new DashboardFrame(new UserDTO("phatias", "phatias", "phatias", "phatias", "phatias", "phatias"), null).setVisible(true);
+//    }
 
-    private void drawingStuff(UserDTO admin) {
-        ImageLoader.smartAttaching(admin.avatar, logoLabel);
-        usernameLabel.setText(admin.fullname);
-        phonePanel = new PhonesPanel(admin);
+    private void drawingStuff() { // drawing things ...
+        ImageLoader.smartAttaching(currentUser.avatar, logoLabel);
+        usernameLabel.setText(currentUser.fullname);
+        roleDisplayLbl.setText(currentUser.roles);
+        switch (currentUser.roles) {
+            case "ADMIN":
+                phonePanel = new AdminPhonePanel(currentUser);
+                break;
+                
+            case "USER":
+                phonePanel = new UserPhonePanel(currentUser);
+                break;
+        }
         contentPanel.add(phonePanel, "Phones");
-        accountPanel = new AccountPanel(admin, logoLabel);
+        accountPanel = new AccountPanel(currentUser, logoLabel);
         contentPanel.add(accountPanel, "Account");
         cardLayout = (CardLayout) contentPanel.getLayout();
         cardLayout.show(contentPanel, "Phones");
@@ -45,7 +63,7 @@ public class AdminFrame extends javax.swing.JFrame {
     }
     
     /**
-     * Creates new form AdminFrame
+     * Creates new form DashboardFrame
      * @param label
      */
     
@@ -55,7 +73,6 @@ public class AdminFrame extends javax.swing.JFrame {
     
     public void setFocus(JLabel label) {
         unFocus(phonesTab);
-        unFocus(usersTab);
         unFocus(accountTab);
         unFocus(logoutTab);
         label.setBackground(new Color(184, 7, 1));
@@ -72,19 +89,19 @@ public class AdminFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         phonesTab = new javax.swing.JLabel();
-        usersTab = new javax.swing.JLabel();
         accountTab = new javax.swing.JLabel();
         logoutTab = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         logoLabel = new javax.swing.JLabel();
         usernameLabel = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        roleDisplayLbl = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         contentPanel = new javax.swing.JPanel();
         userPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Dashboard");
         setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(748, 510));
 
@@ -100,19 +117,6 @@ public class AdminFrame extends javax.swing.JFrame {
         phonesTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 phonesTabMouseClicked(evt);
-            }
-        });
-
-        usersTab.setBackground(new java.awt.Color(21, 21, 21));
-        usersTab.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
-        usersTab.setForeground(new java.awt.Color(255, 255, 255));
-        usersTab.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        usersTab.setText("USERS");
-        usersTab.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        usersTab.setOpaque(true);
-        usersTab.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                usersTabMouseClicked(evt);
             }
         });
 
@@ -151,10 +155,10 @@ public class AdminFrame extends javax.swing.JFrame {
         usernameLabel.setForeground(new java.awt.Color(255, 255, 255));
         usernameLabel.setText("username");
 
-        jLabel7.setBackground(new java.awt.Color(40, 40, 40));
-        jLabel7.setFont(new java.awt.Font("Cantarell", 0, 10)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("ADMIN");
+        roleDisplayLbl.setBackground(new java.awt.Color(40, 40, 40));
+        roleDisplayLbl.setFont(new java.awt.Font("Cantarell", 0, 10)); // NOI18N
+        roleDisplayLbl.setForeground(new java.awt.Color(255, 255, 255));
+        roleDisplayLbl.setText("ADMIN");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -170,7 +174,7 @@ public class AdminFrame extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
+                                .addComponent(roleDisplayLbl)
                                 .addGap(0, 120, Short.MAX_VALUE)))
                         .addGap(20, 20, 20))))
         );
@@ -182,7 +186,7 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(usernameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
+                .addComponent(roleDisplayLbl)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -191,7 +195,6 @@ public class AdminFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(phonesTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(usersTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(accountTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(logoutTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -205,12 +208,10 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(phonesTab, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(usersTab, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(accountTab, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logoutTab, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addContainerGap(334, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
@@ -246,14 +247,7 @@ public class AdminFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         setFocus(phonesTab);
         cardLayout.show(contentPanel, "Phones");
-        ArrayList<PhoneDTO> list = PhoneDAO.getAllPhones();
-        phonePanel.showPhones(list);
     }//GEN-LAST:event_phonesTabMouseClicked
-
-    private void usersTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usersTabMouseClicked
-        // TODO add your handling code here:
-        setFocus(usersTab);
-    }//GEN-LAST:event_usersTabMouseClicked
 
     private void accountTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accountTabMouseClicked
         // TODO add your handling code here:
@@ -277,7 +271,6 @@ public class AdminFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel accountTab;
     private javax.swing.JPanel contentPanel;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -285,8 +278,8 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JLabel logoLabel;
     private javax.swing.JLabel logoutTab;
     private javax.swing.JLabel phonesTab;
+    private javax.swing.JLabel roleDisplayLbl;
     private javax.swing.JPanel userPanel;
     private javax.swing.JLabel usernameLabel;
-    private javax.swing.JLabel usersTab;
     // End of variables declaration//GEN-END:variables
 }

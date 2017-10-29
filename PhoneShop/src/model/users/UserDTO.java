@@ -1,3 +1,5 @@
+package model.users;
+
 
 import java.io.Serializable;
 
@@ -12,7 +14,7 @@ import java.io.Serializable;
  * @author nguyenhongphat0
  */
 public class UserDTO implements Serializable {
-    String username, password, fullname, roles, passhint, avatar;
+    public String username, password, fullname, roles, passhint, avatar;
 
     public UserDTO() {
     }
@@ -60,7 +62,7 @@ public class UserDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "UserDTO{" + "username=" + username + ", password=" + password + ", fullname=" + fullname + ", roles=" + roles + '}';
+        return "Password: " + password + " | Fullname: " + fullname + " | Password hint: " + passhint + " | Avatar: " + avatar;
     }
 
     public String getPasshint() {

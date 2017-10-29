@@ -1,4 +1,7 @@
+package model.users;
 
+
+import controller.MyConnection;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +20,7 @@ import java.sql.SQLException;
  */
 public class UserDAO implements Serializable {
     
-    public static UserDTO getUser(String username, String password) {
+    public static UserDTO getUser(String username, String password) { // get user by username and password
         UserDTO user = null;
         Connection conn = null;
         PreparedStatement pre = null;
@@ -32,7 +35,7 @@ public class UserDAO implements Serializable {
                 user = new UserDTO(username, password, res.getString("fullname"), res.getString("roles"), res.getString("passhint"), res.getString("avatar"));
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
         } finally {
             MyConnection.closeConnection(conn, pre, res);
         }
@@ -40,7 +43,7 @@ public class UserDAO implements Serializable {
         
     }
     
-    public static boolean updateUser(UserDTO user) {
+    public static boolean updateUser(UserDTO user) { // update user info
         Connection conn = null;
         PreparedStatement pre = null;
         ResultSet res = null;
@@ -55,12 +58,34 @@ public class UserDAO implements Serializable {
             pre.setString(5, user.username);
             c = pre.executeUpdate() > 0;
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             c = false;
         } finally {
             MyConnection.closeConnection(conn, pre, res);
         }
         return c;
+    }
+    
+    public static String getPassHint(String username) { // get pass hint by username
+        String hint = null;
+        Connection conn = null;
+        PreparedStatement pre = null;
+        ResultSet res = null;
+        try {
+            conn = MyConnection.getConnection();
+            pre = conn.prepareStatement("SELECT passhint FROM Users WHERE username = ?");
+            pre.setString(1, username);
+            res = pre.executeQuery();
+            if (res.next()) {
+                hint = res.getString("passhint");
+            }
+        } catch (SQLException ex) {
+//            ex.printStackTrace();
+        } finally {
+            MyConnection.closeConnection(conn, pre, res);
+        }
+        return hint;
+        
     }
     
 }

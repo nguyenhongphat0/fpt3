@@ -1,3 +1,5 @@
+package controller;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,8 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 
 /*
@@ -24,7 +24,7 @@ import javax.swing.JLabel;
 public class Logs {
     public static File logsFile = new File("asset/logs");
     
-    public static void push(String message) {
+    public static void push(String message) { // push message to logs
         PrintWriter pw = null;
         try {
             pw = new PrintWriter(new FileOutputStream(logsFile, true));
@@ -42,11 +42,11 @@ public class Logs {
         }
     }
     
-    public static void push(String user, String dowhat) {
+    public static void push(String user, String dowhat) { // push user do something to logs
         push("["+user+"]" + new Date() + " -> " + dowhat);
     }
     
-    public static void pop(String user, JLabel label) {
+    public static void pop(String user, JLabel label) { // get message from logs
         String s = "<html>";
         try {
             BufferedReader br = new BufferedReader(new FileReader(logsFile));

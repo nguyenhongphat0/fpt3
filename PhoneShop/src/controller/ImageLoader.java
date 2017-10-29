@@ -1,8 +1,12 @@
+package controller;
+
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -25,7 +29,7 @@ public class ImageLoader {
             Image img = bi.getScaledInstance(width, height, Image.SCALE_SMOOTH);
             return new ImageIcon(img);
         } catch (IOException ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
             return null;
         }
     }
@@ -42,7 +46,7 @@ public class ImageLoader {
         label.setIcon(importImage(url, -1, label.getHeight()));
     }
     
-    public static void smartAttaching(String url, JLabel label) {
+    public static void smartAttaching(String url, JLabel label) { // auto fit image to label the beautifulest way
         try {
             BufferedImage bi = ImageIO.read(new File(url));
             double imgRatio = 1.0*bi.getWidth()/bi.getHeight();
@@ -59,8 +63,21 @@ public class ImageLoader {
             }
             Image img = bi.getScaledInstance(w, h, Image.SCALE_SMOOTH);
             label.setIcon(new ImageIcon(img));
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+//            ex.printStackTrace();
+        }
+    }
+    
+    public static void copyImage(String src, String des) { // copy image from src to des
+        if (src == null || des == null) {
+            return;
+        }
+        File srcFile = new File(src);
+        File desFile = new File(des);
+        try {
+            Files.copy(srcFile.toPath(), desFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception ex) {
+//            ex.printStackTrace();
         }
     }
 }

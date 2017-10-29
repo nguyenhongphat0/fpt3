@@ -1,6 +1,12 @@
+package view.login;
 
+
+import model.users.UserDTO;
+import model.users.UserDAO;
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import view.board.DashboardFrame;
+import controller.ImageLoader;
 
 
 
@@ -49,7 +55,6 @@ public class LoginFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
         setLocationByPlatform(true);
-        setMaximumSize(new java.awt.Dimension(724, 475));
         setMinimumSize(new java.awt.Dimension(724, 475));
 
         jLabel1.setFont(new java.awt.Font("Noto Sans", 0, 13)); // NOI18N
@@ -78,10 +83,15 @@ public class LoginFrame extends javax.swing.JFrame {
         jButton2.setBackground(new java.awt.Color(197, 197, 197));
         jButton2.setFont(new java.awt.Font("Noto Sans", 0, 13)); // NOI18N
         jButton2.setForeground(new java.awt.Color(1, 1, 1));
-        jButton2.setText("Register");
+        jButton2.setText("Password Hint");
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton2.setFocusPainted(false);
         jButton2.setPreferredSize(new java.awt.Dimension(100, 40));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         passwordTxt.setEchoChar('@');
         passwordTxt.setMargin(new java.awt.Insets(0, 5, 0, 5));
@@ -102,7 +112,7 @@ public class LoginFrame extends javax.swing.JFrame {
                             .addGroup(loginPanelLayout.createSequentialGroup()
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -166,13 +176,20 @@ public class LoginFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Incorrect username or password!");
             return;
         }
-        switch (user.getRoles()) {
-            case "ADMIN":
-                new AdminFrame(user, this).setVisible(true);
-                this.setVisible(false);
-                break;
-        }
+        new DashboardFrame(user, this).setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        String username = usernameTxt.getText();
+        String hint = UserDAO.getPassHint(username);
+        if (hint == null) {
+            JOptionPane.showMessageDialog(this, "There is no password hint for this user!", "Password hint", 0);
+            return;
+        }
+        JOptionPane.showMessageDialog(this, hint, "Password hint", 1);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,14 +207,8 @@ public class LoginFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (Exception e) {
+//            e.printStackTrace();
         }
         //</editor-fold>
 

@@ -1,11 +1,13 @@
+package view.panel;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+
+import controller.Logs;
+import model.users.UserDTO;
+import model.users.UserDAO;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import controller.ImageLoader;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,7 +38,7 @@ public class AccountPanel extends javax.swing.JPanel {
         Logs.pop(user.username, logsLbl);
     }
 
-    UserDTO retriveUserInfo() {
+    public UserDTO retriveUserInfo() {
         String username = usernameTxt.getText();
         String password = new String(passwordTxt.getPassword());
         String fullname = fullnameTxt.getText();
@@ -46,7 +48,7 @@ public class AccountPanel extends javax.swing.JPanel {
         return new UserDTO(username, password, fullname, role, passhint, avatar);
     }
     
-    void distriveUserInfo() {
+    public void distriveUserInfo() {
         String[] names = user.fullname.split(" ");
         titleLbl.setText(names[names.length-1] + "'s profile");
         usernameTxt.setText(user.username);
@@ -294,21 +296,11 @@ public class AccountPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    void copyImage(String src, String des) {
-        File srcFile = new File(src);
-        File desFile = new File(des);
-        try {
-            Files.copy(srcFile.toPath(), desFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // TODO add your handling code here:
         UserDTO newUser = retriveUserInfo();
         newUser.avatar = "asset/users/" + newUser.username + ".jpg";
-        copyImage(avatarLink, newUser.avatar);
+        ImageLoader.copyImage(avatarLink, newUser.avatar);
         if (UserDAO.updateUser(newUser)) {
             this.user = newUser;
             distriveUserInfo();

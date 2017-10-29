@@ -1,3 +1,6 @@
+package model.phones;
+
+import controller.MyConnection;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +20,7 @@ import java.util.ArrayList;
  */
 public class PhoneDAO implements Serializable {
     
-    public static ArrayList<PhoneDTO> getAllPhones() {
+    public static ArrayList<PhoneDTO> getAllPhones() { // get all phones from db
         Connection conn = null;
         PreparedStatement pre = null;
         ResultSet res = null;
@@ -30,14 +33,14 @@ public class PhoneDAO implements Serializable {
                 list.add(new PhoneDTO(res.getString("id"), res.getString("name"), null, null, null, res.getFloat("price")));
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
         } finally {
             MyConnection.closeConnection(conn, pre, res);
         }
         return list;
     }
     
-    public static PhoneDTO getPhone(String id) {
+    public static PhoneDTO getPhone(String id) { // get phone by id
         Connection conn = null;
         PreparedStatement pre = null;
         ResultSet res = null;
@@ -51,14 +54,14 @@ public class PhoneDAO implements Serializable {
                 phone = new PhoneDTO(res.getString("id"), res.getString("name"), res.getString("os"), res.getString("description"), res.getString("picture"), res.getFloat("price"));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } finally {
             MyConnection.closeConnection(conn, pre, res);
         }
         return phone;
     }
     
-    public static ArrayList<PhoneDTO> findLikeName(String name) {
+    public static ArrayList<PhoneDTO> findLikeName(String name) { // find phone like name
         Connection conn = null;
         PreparedStatement pre = null;
         ResultSet res = null;
@@ -72,14 +75,14 @@ public class PhoneDAO implements Serializable {
                 list.add(new PhoneDTO(res.getString("id"), res.getString("name"), null, null, null, res.getFloat("price")));
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
         } finally {
             MyConnection.closeConnection(conn, pre, res);
         }
         return list;
     }
     
-    public static boolean addPhone(PhoneDTO phone) {
+    public static boolean addPhone(PhoneDTO phone) { // add new phone
         Connection conn = null;
         PreparedStatement pre = null;
         ResultSet res = null;
@@ -95,7 +98,7 @@ public class PhoneDAO implements Serializable {
             pre.setFloat(6, phone.price);
             c = pre.executeUpdate() > 0;
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             c = false;
         } finally {
             MyConnection.closeConnection(conn, pre, res);
@@ -103,7 +106,7 @@ public class PhoneDAO implements Serializable {
         return c;
     }
     
-    public static boolean updatePhone(PhoneDTO phone) {
+    public static boolean updatePhone(PhoneDTO phone) { // update phone info
         Connection conn = null;
         PreparedStatement pre = null;
         ResultSet res = null;
@@ -119,7 +122,7 @@ public class PhoneDAO implements Serializable {
             pre.setString(6, phone.id);
             c = pre.executeUpdate() > 0;
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             c = false;
         } finally {
             MyConnection.closeConnection(conn, pre, res);
@@ -127,7 +130,7 @@ public class PhoneDAO implements Serializable {
         return c;
     }
     
-    public static boolean deletePhone(String id) {
+    public static boolean deletePhone(String id) { // delete phone by id
         Connection conn = null;
         PreparedStatement pre = null;
         ResultSet res = null;
@@ -138,7 +141,7 @@ public class PhoneDAO implements Serializable {
             pre.setString(1, id);
             c = pre.executeUpdate() > 0;
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             c = false;
         } finally {
             MyConnection.closeConnection(conn, pre, res);
