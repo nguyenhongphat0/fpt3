@@ -4,3 +4,14 @@
 [nguyenhongphat0]ID: s8 | Name: Samsung Galaxy S8 | Description: The smartest phone ever | Price: 28000000.00
 [vophucduc]Sun Oct 29 17:04:53 ICT 2017 -> update profile information to:
 [vophucduc]Password: phucduc | Fullname: Võ Phúc Ðức | Password hint: ten cua tui | Avatar: asset/users/vophucduc.jpg
+[nguyenhongphat0]Wed Nov 01 15:59:09 ICT 2017 -> add new phone: ""
+[nguyenhongphat0]Wed Nov 01 20:09:47 ICT 2017 -> remove phone: ""
+[nguyenhongphat0]Wed Nov 01 20:10:33 ICT 2017 -> add new phone: "hihi"
+[nguyenhongphat0]Wed Nov 01 20:31:17 ICT 2017 -> add new phone: "abc"
+[nguyenhongphat0]Wed Nov 01 20:31:27 ICT 2017 -> remove phone: "abc"
+[nguyenhongphat0]Wed Nov 01 20:32:30 ICT 2017 -> remove phone: "hihi"
+[nguyenhongphat0]Wed Nov 01 20:32:45 ICT 2017 -> add new phone: "hihi"
+[nguyenhongphat0]Wed Nov 01 20:32:56 ICT 2017 -> update phone information to:
+[nguyenhongphat0]ID: hihi | Name: hongphat | Description:  | Price: 15.00
+[nguyenhongphat0]Wed Nov 01 20:33:25 ICT 2017 -> update phone information to:
+[nguyenhongphat0]ID: hihi | Name:  | Description:  | Price: 15.00

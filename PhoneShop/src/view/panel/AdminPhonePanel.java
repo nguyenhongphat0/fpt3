@@ -474,12 +474,26 @@ public class AdminPhonePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_loadImgBtnActionPerformed
 
     PhoneDTO retrivePhoneInfo() {
+        if (idTxt.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "ID must not be null");
+            return null;
+        }
         float price;
         try {
             price = Float.parseFloat(priceTxt.getText());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Invalid price format!");
             return null;
+        }
+        if (nameTxt.getText().equals("")) {
+            if (!(JOptionPane.showConfirmDialog(this, "You should not left phone name blank. If you sure you will update it later, click yes, other wise, no for cancel this operation!") == JOptionPane.OK_OPTION)) {
+                return null;
+            }
+        }
+        if (nameTxt.getText().equals("")) {
+            if (!(JOptionPane.showConfirmDialog(this, "You should not left operating system blank. If you sure you will update it later, click yes, other wise, no for cancel this operation!") == JOptionPane.OK_OPTION)) {
+                return null;
+            }
         }
         return new PhoneDTO(idTxt.getText(), nameTxt.getText(), osTxt.getText(), descriptionTxt.getText(), pictureLink, price);
     }
