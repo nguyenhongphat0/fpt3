@@ -62,7 +62,7 @@ public class UserDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "Password: " + password + " | Fullname: " + fullname + " | Password hint: " + passhint + " | Avatar: " + avatar;
+        return "Password: " + password + " | Fullname: " + fullname + " | Password hint: " + passhint;
     }
 
     public String getPasshint() {

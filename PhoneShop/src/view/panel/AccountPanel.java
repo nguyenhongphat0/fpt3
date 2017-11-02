@@ -42,7 +42,15 @@ public class AccountPanel extends javax.swing.JPanel {
     public UserDTO retriveUserInfo() {
         String username = usernameTxt.getText();
         String password = new String(passwordTxt.getPassword());
+        if (password.equals("")) {
+            JOptionPane.showMessageDialog(this, "Password must not be null!");
+            return null;
+        }
         String fullname = fullnameTxt.getText();
+        if (fullname.equals("")) {
+            JOptionPane.showMessageDialog(this, "Full name must not be null!");
+            return null;
+        }
         String role = user.roles;
         String passhint = passhintTxt.getText();
         String avatar = avatarLink;
@@ -300,6 +308,9 @@ public class AccountPanel extends javax.swing.JPanel {
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // TODO add your handling code here:
         UserDTO newUser = retriveUserInfo();
+        if (newUser == null) {
+            return;
+        }
         newUser.avatar = "asset/users/" + newUser.username + ".jpg";
         ImageLoader.copyImage(avatarLink, newUser.avatar);
         if (UserDAO.updateUser(newUser)) {
